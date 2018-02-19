@@ -5,6 +5,12 @@ var secrets = require('./secrets.js');
 var owner_repo = process.argv.slice(2);
 if(owner_repo.length !== 2) throw "ERROR: you haven't passed the arguments correctly!";
 
+var dir = './avatar/';
+
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
+
 console.log('Welcome to the GitHub Avatar Downloader!');
 
 function getRepoContributors(repoOwner, repoName, cb) {
@@ -29,13 +35,13 @@ function downloadImageByURL(url, filePath) {
   	  throw err;
   	})
   	.on('response', function(response){
-  	  console.log(`Downloading image to ${filePath}...`);
+  	  console.log(`Downloading image to ${dir}${filePath}...`);
   	})
-  	.pipe(fs.createWriteStream(`./${filePath}`));
+  	.pipe(fs.createWriteStream(`${dir}${filePath}`));
 }
 
 getRepoContributors(owner_repo[0], owner_repo[1], function(result) {
   result.forEach(function(element) {
-  	downloadImageByURL(element.avatar_url, `avatar/${element.login}.png`);
+  	downloadImageByURL(element.avatar_url, `${element.login}.png`);
   });
 });
