@@ -20,8 +20,22 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
+function downloadImageByURL(url, filePath) {
+  request.get(url)
+  	.on('error', function(err){
+  	  throw err;
+  	})
+  	.on('response', function(response){
+  	  console.log(`Downloading image to ${filePath}...`);
+  	})
+  	.pipe(fs.createWriteStream(`./${filePath}`))
+    .on('finish', function() {
+      console.log('Download complete.');
+    });
+}
+
 getRepoContributors("jquery", "jquery", function(result) {
   result.forEach(function(element) {
-  	console.log(element.login, element.avatar_url);
+  	downloadImageByURL(element.avatar_url, `avatar/${element.login}.png`);
   });
 });
