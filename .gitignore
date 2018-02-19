@@ -1,3 +1,6 @@
+# Another way to hide token...
+.env
+
 # My Key
 secrets.js
 

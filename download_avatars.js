@@ -1,6 +1,6 @@
 var request = require('request');
 var fs = require('fs');
-var secrets = require('./secrets.js');
+require('dotenv').config();
 
 var owner_repo = process.argv.slice(2);
 if(owner_repo.length !== 2) throw "ERROR: you haven't passed the arguments correctly!";
@@ -18,7 +18,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
       'User-Agent': 'request',
-      'Authorization': 'token ' + secrets.GITHUB_TOKEN
+      'Authorization': `token ${process.env.TOKEN}`
     }
   };
 
