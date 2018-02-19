@@ -2,12 +2,12 @@ var request = require('request');
 var fs = require('fs');
 require('dotenv').config();
 
-if(!fs.existsSync('./.env')) throw ".env file missing...";
-if(!('TOKEN' in process.env)) throw "TOKEN missing from .env...";
+if(!fs.existsSync('./.env')) throw new Error(".env file missing...");
+if(!('TOKEN' in process.env)) throw new Error("TOKEN missing from .env...");
 
 // This handles input errors.
 var owner_repo = process.argv.slice(2);
-if(owner_repo.length !== 2) throw "ERROR: you haven't passed the arguments correctly!";
+if(owner_repo.length !== 2) throw new Error("you haven't passed the arguments correctly!");
 
 // This ensures that the directory will be there if it
 // isn't already.
@@ -30,6 +30,10 @@ function getRepoContributors(repoOwner, repoName, cb) {
     // This handles the faulty owner or repo error
     if(arr.message === "Not Found") {
       console.log("No such owner or repo...");      
+    }
+    // And this is for bac credentials
+    else if(arr.message === "Bad credentials") {
+      console.log("You are not authorized to access the data. Check your GitHub token");
     }
     else cb(arr);
   });
