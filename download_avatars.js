@@ -2,6 +2,8 @@ var request = require('request');
 var fs = require('fs');
 var secrets = require('./secrets.js');
 
+var owner_repo = process.argv.slice(2);
+if(owner_repo.length !== 2) throw "ERROR: you haven't passed the arguments correctly!";
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
@@ -29,13 +31,10 @@ function downloadImageByURL(url, filePath) {
   	.on('response', function(response){
   	  console.log(`Downloading image to ${filePath}...`);
   	})
-  	.pipe(fs.createWriteStream(`./${filePath}`))
-    .on('finish', function() {
-      console.log('Download complete.');
-    });
+  	.pipe(fs.createWriteStream(`./${filePath}`));
 }
 
-getRepoContributors("jquery", "jquery", function(result) {
+getRepoContributors(owner_repo[0], owner_repo[1], function(result) {
   result.forEach(function(element) {
   	downloadImageByURL(element.avatar_url, `avatar/${element.login}.png`);
   });
