@@ -31,7 +31,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
     if(arr.message === "Not Found") {
       console.log("No such owner or repo...");      
     }
-    // And this is for bac credentials
+    // And this is for bad credentials
     else if(arr.message === "Bad credentials") {
       console.log("You are not authorized to access the data. Check your GitHub token");
     }
